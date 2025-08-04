@@ -1,2 +1,5 @@
 # virtual environment
 .venv
+
+# cache files
+src/__pycache__
