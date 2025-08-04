@@ -29,10 +29,11 @@ def run(url: str, out_dir: Path) -> None:
 
     # analysis (stub returns dummy data for now)
     metrics = analyze_design(shot_path)
-    print(metrics)
+    print("analyzer metrics: ", metrics)
 
     # score
     score, breakdown = score_design(metrics)
+    print("score: ", score)
 
     # reports in html, md, pdf
     pdf_path, html_path, md_path = generate_reports(
