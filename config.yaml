@@ -1,0 +1,16 @@
+weights:
+  whitespace: 0.20
+  contrast:   0.30
+  color_harmony: 0.30
+  text_density: 0.20
+
+analyzer: 
+  whitespace_tol: 245 
+  contrast_percentiles: [5, 95]
+  edge_ratio_ideal: [0.05, 0.20]
+
+screenshot:
+  viewport: [1280, 800]
+  networkidle_timeout_ms: 10000
+  buffer_ms: 1500
+  scroll_delay_ms: 500
