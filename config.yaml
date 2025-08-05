@@ -14,3 +14,8 @@ screenshot:
   networkidle_timeout_ms: 10000
   buffer_ms: 1500
   scroll_delay_ms: 500
+
+google:
+  service_account_json: "client_secret_814068644431-vs28ro2tmr52tv2h5jl9to1hpt1hamml.apps.googleusercontent.com.json"
+  drive_folder_id: "1PGXd2bOpCTC3wvTCwtxTig2shDAlp9RI"
+  sheet_id:        "10phHbtPkersqfs6fe5fGuJbGiEV2OOUgvT0JfqjeK_8"

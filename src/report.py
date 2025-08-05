@@ -15,7 +15,7 @@ from jinja2 import Template
 from weasyprint import HTML
 
 
-# ──────────────────────── helpers ────────────────────────
+# helpers
 
 
 _EXPLAIN = {
@@ -32,7 +32,7 @@ _TIPS = {
     "text_density": "limit simultaneous content; add whitespace between sections",
 }
 
-_THRESHOLDS = {k: 70 for k in _EXPLAIN}  # below this triggers tip
+_THRESHOLDS = {k: 70 for k in _EXPLAIN}
 
 
 _HTML_TMPL = """
@@ -180,7 +180,7 @@ def _write_files(
     return pdf_path, html_path, md_path
 
 
-# ───────────────────── public API ────────────────────────
+# public gateway
 
 
 def generate_reports(
