@@ -1,112 +1,119 @@
-# Website Design Scoring and Reporting Tool
+# Website Design Scoring & Reporting Tool
 
-An automated Python solution to assess the visual design of websites using screenshots. The tool analyzes key design principles such as whitespace usage, contrast, color harmony, and text density, and returns a normalized score per metric. Outputs include PDF, HTML, and Markdown reports with screenshots, ready to be shared or logged.
+Automatically capture a homepage, analyse its visual design, and publish share-ready reports.  
+Runs end-to-end on Python 3 (Linux-friendly, cross-platform) and—optionally—pushes artefacts to **Google Drive** while logging scores to **Google Sheets**.
 
->  **Designed for Linux systems but compatible with other OS**. Integrates with Google Drive and Google Sheets for cloud-based reporting and logging.
+> **Why?** Get an at-a-glance health check of typography, colour usage, layout balance, and overall polish—handy for designers, QA teams, and CRO audits.
 
 ---
 
 ## Features
 
-- Automated screenshot capture of website homepages
-- Visual design evaluation using OpenCV and image analysis
-- Metrics:
-  - **Whitespace ratio**
-  - **Contrast**
-  - **Color harmony**
-  - **Text density**
-- Exports results to:
-  - Markdown (`.md`)
-  - HTML (`.html`)
-  - PDF (`.pdf`)
-- Optional: Uploads results to Google Drive and logs metrics to Google Sheets
+| Category | Details |
+|----------|---------|
+| **Capture** | Headless Chromium via Playwright; full-page PNG at 1280 × 800. |
+| **Analysis** | OpenCV + NumPy heuristics:<br>• Whitespace ratio<br>• Global contrast<br>• Palette harmony (k-means)<br>• Text density (edge map) |
+| **Scoring** | Weighted 0-100 (+ breakdown table). Weights editable in **`config.yaml`**. |
+| **Reporting** | • HTML (styled)<br>• PDF (WeasyPrint)<br>• Markdown (Git-friendly)<br>Each embeds the screenshot + tips. |
+| **Cloud** | *(opt-in)* Upload screenshot & reports to Drive 📂, append row to Sheets 📋. |
+| **CLI** | `python -m src.main <url> -o <output_dir>` |
 
 ---
 
-## Project Structure
+## 🗂 Project Layout
 
 ```
 
-.  
+website_design_scoring_and_reporting_tool/  
 ├── src/  
-│ ├── analyzer/ # Core image analysis functions  
-│ ├── output/ # Generated reports and screenshots  
-│ └── utils/ # Helper functions (color analysis, scoring, etc.)  
-├── config.yaml # Configuration for API keys and runtime behavior  
-├── requirements.txt # Python dependencies  
-├── README.md # This file
+│ ├── analyzer.py # metrics  
+│ ├── screenshot.py # Playwright capture  
+│ ├── scorer.py # weighted total  
+│ ├── report.py # HTML → PDF / MD  
+│ └── integrations.py # Drive + Sheets  
+├── secrets/ # ← OAuth / SA credentials (git-ignored)  
+├── config.yaml  
+├── requirements.txt  
+└── README.md
 
-```
+````
 
 ---
 
 ## Installation
 
-1. Clone the repository:
 ```bash
-git clone
-git@github.com:jdvanegasm/website_design_scoring_and_reporting_tool.git
+git clone https://github.com/jdvanegasm/website_design_scoring_and_reporting_tool.git
 cd website_design_scoring_and_reporting_tool
-```
 
-2. Create and activate a virtual environment:
-    
-    ```bash
-    python3 -m venv .venv
-    . .venv/bin/activate
-    ```
-    
-3. Install dependencies:
-    
-    ```bash
-    pip install -r requirements.txt
-    ```
-    
+python -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+````
 
 ---
 
-## Usage
+## Quick Start
 
-1. Run in your terminal (inside src/):
-``` bash
-python main.py https://your_website -o output
+```bash
+# from repo root
+python -m src.main https://example.com -o output/
+# → output/report.{pdf,html,md}, screenshot_*.png
 ```
 
 ---
 
-## Metric Overview
+## Google Drive / Sheets Integration (optional)
 
-|Metric|Description|Ideal Range|
+|Step|What to do|
+|---|---|
+|**1. Enable APIs**|In Google Cloud Console enable **Drive API** and **Sheets API** for your project.|
+|**2. Credentials**|- **Option A**: Service-account JSON (requires Workspace + shared drive).- **Option B**: OAuth “Desktop” client (`client_secret.json`). First run opens a browser to grant access and stores `token.json` automatically.|
+|**3. IDs**|Copy the **folder ID** (`https://drive.google.com/drive/folders/<ID>`) and **sheet ID** (`https://docs.google.com/spreadsheets/d/<ID>/…`).|
+|**4. Edit `config.yaml`**|`yaml<br>google:<br> service_account_json: "secrets/client_secret.json"<br> drive_folder_id: "1AbC...DriveID"<br> sheet_id: "1XyZ...SheetID"<br>`|
+|**5. Run again**|The tool uploads files to the folder and appends a new row (`timestamp|
+
+All credential files live in **`secrets/`** and are ignored by Git (`.gitignore`).
+
+---
+
+## Configuration Highlights
+
+```yaml
+weights:
+  whitespace: 0.20
+  contrast:   0.30
+  color_harmony: 0.30
+  text_density: 0.20   # tweak to reflect your priorities
+
+analyzer:
+  whitespace_tol: 245          # RGB > tol counts as “white”
+  contrast_percentiles: [5,95] # change for dark sites
+```
+
+---
+
+## Metric Cheat-Sheet
+
+|Metric|Good ≈|Why it matters|
 |---|---|---|
-|Whitespace|Proportion of blank space; improves readability and clarity|~60–70%|
-|Contrast|Intensity difference between elements|High|
-|Color Harmony|Aesthetic coherence between dominant colors|High|
-|Text Density|Balance between content and clarity (via edge detection)|Moderate|
-
----
-
-## Configuration
-
-You can modify `config.yaml` to adjust behavior, enable Drive/Sheets logging, set scoring weights, etc.
-
----
-
-## License
-
-This project is licensed under the **GPL-3.0 License**. See the [LICENSE](https://chatgpt.com/c/LICENSE) file for more details.
+|Whitespace|≥ 60 %|Gives breathing room & focus|
+|Contrast|≥ 70 %|Aids legibility / accessibility|
+|Color harmony|≥ 80 %|Cohesive, professional feel|
+|Text density|10–20 %|Balanced information vs. clutter|
 
 ---
 
 ## Contributing
 
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change or extend.
+PRs are welcome—open an issue for large proposals first.  
+Please run `black` and `pytest` before pushing.
 
 ---
 
-## Contact
+## License
 
-<<<<<<< HEAD
-Developed by [@jdvanegasm](https://github.com/jdvanegasm) as part of a test for automation and visual analysis tooling.
-=======
-Developed by [@jdvanegasm](https://github.com/jdvanegasm) as part of a test for automation and visual analysis tooling.
->>>>>>> 9fbcd8b (dev: finished integrations)
+GPL-3.0 – see `LICENSE`.
+
+---
+
+> _Made with 🐍  by [@jdvanegasm](https://github.com/jdvanegasm)._ Enjoy scoring!
