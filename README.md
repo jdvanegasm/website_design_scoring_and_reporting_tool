@@ -105,4 +105,8 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 ## Contact
 
+<<<<<<< HEAD
 Developed by [@jdvanegasm](https://github.com/jdvanegasm) as part of a test for automation and visual analysis tooling.
+=======
+Developed by [@jdvanegasm](https://github.com/jdvanegasm) as part of a test for automation and visual analysis tooling.
+>>>>>>> 9fbcd8b (dev: finished integrations)

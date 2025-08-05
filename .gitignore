@@ -3,3 +3,7 @@
 
 # cache files
 src/__pycache__
+
+# google api service
+src/client_secret_814068644431-vs28ro2tmr52tv2h5jl9to1hpt1hamml.apps.googleusercontent.com.json
+src/client_secret_814068644431-vs28ro2tmr52tv2h5jl9to1hpt1hamml.apps.googleusercontent.com.token.json
